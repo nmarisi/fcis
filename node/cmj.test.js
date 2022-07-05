@@ -16,11 +16,6 @@ it('handles failure to fetch data with error response', async () => {
         return [403, null]
     })
 
-    try {
-        await fetchPosts()
-    } catch (err) {
-        expect(err).toEqual("error");
-        return
-    }
-    throw new Error("expected an error")
+    await expect(fetchPosts()).rejects.toEqual("error")
+
 });
