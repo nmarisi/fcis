@@ -5,18 +5,23 @@ const CMS_URL = 'http://jsonplaceholder.typicode.com/posts'
 
 module.exports = {
   main: async function(context) {
-    try {
+    async function fetchPosts() {
       const res = await axios.get(CMS_URL)
       console.log('Getting CMS data')
+      let postData = undefined;
       if (res.status !== 200) {
         console.log('Error occurred, status =', res.status)
-        return Promise.reject('error')
       }
-      const { data } = res
+      const {data} = res
+      return data;
+    }
+
+    try {
+      let postData = await fetchPosts();
 
       let today = new Date()
       today = today.toISOString().slice(0, 10)
-      let { summary } = produceSummary(data)
+      let { summary } = produceSummary(postData)
       fs.writeFileSync('cms-' + today + '.json', JSON.stringify(summary))
       console.log('Wrote CMS report')
       return Promise.resolve(true)
