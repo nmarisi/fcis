@@ -3,27 +3,29 @@ const fs = require('fs')
 const axios = require('axios').default
 const CMS_URL = 'http://jsonplaceholder.typicode.com/posts'
 
-module.exports = {
-    fetchPosts: async function () {
-        let res;
-        try {
-            res = await axios.get(CMS_URL);
-        } catch (err) {
-            console.log('An error occurred getting the post data', err)
-            return Promise.reject('error')
-        }
+async function fetchPosts() {
+    let res;
+    try {
+        res = await axios.get(CMS_URL);
+    } catch (err) {
+        console.log('An error occurred getting the post data', err)
+        return Promise.reject('error')
+    }
 
-        console.log('Getting CMS data')
-        if (res.status !== 200) {
-            console.log('Error occurred, status =', res.status)
-            return undefined;
-        }
-        return res.data;
-    },
+    console.log('Getting CMS data')
+    if (res.status !== 200) {
+        console.log('Error occurred, status =', res.status)
+        return undefined;
+    }
+    return res.data;
+}
+
+module.exports = {
+    fetchPosts: fetchPosts,
 
     main: async function (context) {
         try {
-            let postData = await this.fetchPosts();
+            let postData = await fetchPosts();
 
             let today = new Date()
             today = today.toISOString().slice(0, 10)
