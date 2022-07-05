@@ -9,7 +9,9 @@ module.exports = {
       const res = await axios.get(CMS_URL)
       console.log('Getting CMS data')
       if (res.status === 200) {
-        let { today, summary } = newFunction(res)
+        let today = new Date()
+        today = today.toISOString().slice(0, 10)
+        let { summary } = newFunction(res)
         fs.writeFileSync('cms-' + today + '.json', JSON.stringify(summary))
         console.log('Wrote CMS report')
         return Promise.resolve(true)
@@ -24,8 +26,6 @@ module.exports = {
 
     function newFunction(res) {
       console.log('CMS data has: ', res.data.length, 'records')
-      let today = new Date()
-      today = today.toISOString().slice(0, 10)
       let summary = { posts: 0, users: 0, posts_per_user: 0 }
       let users = []
       for (let i = 0; i < res.data.length; i++) {
@@ -37,7 +37,7 @@ module.exports = {
       }
       summary.users = users.length
       summary.mean_posts_per_user = Math.round(summary.posts / summary.users)
-      return { today, summary }
+      return  { summary }
     }
   }
 }
