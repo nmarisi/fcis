@@ -4,19 +4,19 @@ const axios = require('axios').default
 const CMS_URL = 'http://jsonplaceholder.typicode.com/posts'
 
 module.exports = {
-  main: async function(context) {
-    async function fetchPosts() {
-      const res = await axios.get(CMS_URL)
-      console.log('Getting CMS data')
-      if (res.status !== 200) {
-        console.log('Error occurred, status =', res.status)
-        return undefined;
-      }
-      return res.data;
+  fetchPosts:  async function() {
+    const res = await axios.get(CMS_URL)
+    console.log('Getting CMS data')
+    if (res.status !== 200) {
+      console.log('Error occurred, status =', res.status)
+      return undefined;
     }
+    return res.data;
+  },
 
+  main: async function(context) {
     try {
-      let postData = await fetchPosts();
+      let postData = await this.fetchPosts();
 
       let today = new Date()
       today = today.toISOString().slice(0, 10)

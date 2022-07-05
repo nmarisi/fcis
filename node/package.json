@@ -5,11 +5,14 @@
   "main": "cms.js",
   "scripts": {
     "run": "node -e 'cms=require(\"./cms.js\");cms.main({})'",
-    "test": "node test-cms.js"
+    "test": "node test-cms.js",
+    "jest": "jest"
   },
   "author": "@sleepyfox",
   "license": "CC-BY-SA-NC-3.0",
   "dependencies": {
-    "axios": "0.27.x"
+    "axios": "0.27.x",
+    "axios-mock-adapter": "^1.21.1",
+    "jest": "^28.1.2"
   }
 }
