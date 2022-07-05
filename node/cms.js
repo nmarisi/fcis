@@ -15,7 +15,7 @@ async function fetchPosts() {
     console.log('Getting CMS data')
     if (res.status !== 200) {
         console.log('Error occurred, status =', res.status)
-        return undefined;
+        return Promise.reject('non 200 status')
     }
     return res.data;
 }

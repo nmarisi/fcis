@@ -19,3 +19,12 @@ it('handles failure to fetch data with error response', async () => {
     await expect(fetchPosts()).rejects.toEqual("error")
 
 });
+
+it('handles failure to fetch data with 201 response', async () => {
+    mock.onGet("http://jsonplaceholder.typicode.com/posts").reply(() => {
+        return [201, null]
+    })
+    await expect(fetchPosts()).rejects.toEqual("non 200 status")
+
+
+});
