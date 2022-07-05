@@ -8,17 +8,19 @@ module.exports = {
     try {
       const res = await axios.get(CMS_URL)
       console.log('Getting CMS data')
-      if (res.status === 200) {
-        let today = new Date()
-        today = today.toISOString().slice(0, 10)
-        let { summary } = produceSummary(res.data)
-        fs.writeFileSync('cms-' + today + '.json', JSON.stringify(summary))
-        console.log('Wrote CMS report')
-        return Promise.resolve(true)
-      } else {
+      if (res.status !== 200) {
         console.log('Error occurred, status =', res.status)
         return Promise.reject('error')
       }
+      const { data } = res
+
+      let today = new Date()
+      today = today.toISOString().slice(0, 10)
+      let { summary } = produceSummary(data)
+      fs.writeFileSync('cms-' + today + '.json', JSON.stringify(summary))
+      console.log('Wrote CMS report')
+      return Promise.resolve(true)
+
     } catch (err) {
       console.log('An error occurred getting the post data', err)
       return Promise.reject('error')
