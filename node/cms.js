@@ -41,17 +41,16 @@ module.exports = {
 
         function produceSummary(data) {
             console.log('CMS data has: ', data.length, 'records')
-            let summary = {posts: 0, users: 0, posts_per_user: 0}
+            let summary = {posts: data.length, users: 0, posts_per_user: 0}
             let users = []
             for (let i = 0; i < data.length; i++) {
                 // console.log('processing record', i, 'for user', res.data[i].userId)
-                summary.posts++
                 if (!users.includes(data[i].userId)) {
                     users.push(data[i].userId)
                 }
             }
             summary.users = users.length
-            summary.mean_posts_per_user = Math.round(summary.posts / summary.users)
+            summary.mean_posts_per_user = Math.round(data.length / summary.users)
             return {summary}
         }
     }
