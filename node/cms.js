@@ -11,7 +11,7 @@ module.exports = {
       if (res.status === 200) {
         let today = new Date()
         today = today.toISOString().slice(0, 10)
-        let { summary } = newFunction(res)
+        let { summary } = produceSummary(res.data)
         fs.writeFileSync('cms-' + today + '.json', JSON.stringify(summary))
         console.log('Wrote CMS report')
         return Promise.resolve(true)
@@ -24,15 +24,15 @@ module.exports = {
       return Promise.reject('error')
     }
 
-    function newFunction(res) {
-      console.log('CMS data has: ', res.data.length, 'records')
+    function produceSummary(data) {
+      console.log('CMS data has: ', data.length, 'records')
       let summary = { posts: 0, users: 0, posts_per_user: 0 }
       let users = []
-      for (let i = 0; i < res.data.length; i++) {
+      for (let i = 0; i < data.length; i++) {
         // console.log('processing record', i, 'for user', res.data[i].userId)
         summary.posts++
-        if (!users.includes(res.data[i].userId)) {
-          users.push(res.data[i].userId)
+        if (!users.includes(data[i].userId)) {
+          users.push(data[i].userId)
         }
       }
       summary.users = users.length
