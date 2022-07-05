@@ -8,12 +8,11 @@ module.exports = {
     async function fetchPosts() {
       const res = await axios.get(CMS_URL)
       console.log('Getting CMS data')
-      let postData = undefined;
       if (res.status !== 200) {
         console.log('Error occurred, status =', res.status)
+        return undefined;
       }
-      const {data} = res
-      return data;
+      return res.data;
     }
 
     try {
